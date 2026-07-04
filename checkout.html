@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-header" id="checkoutHeader">
+    <div class="container">
+      <h1 data-lang="checkout_title">Checkout</h1>
+    </div>
+  </div>
+
+  <section class="section checkout-page" style="padding-top:0;">
+    <div class="container">
+      
+      <!-- Order Confirmation State -->
+      <div class="order-confirmation" id="orderConfirmation">
+        <div class="confirmation-icon">✓</div>
+        <h2 data-lang="checkout_order_placed">Order Placed Successfully!</h2>
+        <div class="order-id"><span data-lang="checkout_order_id">Your Order ID</span>: <span id="displayOrderId"></span></div>
+        <p data-lang="checkout_whatsapp_msg" style="color:var(--text-muted); margin-bottom:24px;">We've sent your order details to WhatsApp</p>
+        <a href="track-order.html" class="btn btn-primary" data-lang="nav_track">Track Order</a>
+        <a href="shop.html" class="btn btn-outline" data-lang="cart_continue">Continue Shopping</a>
+      </div>
+
+      <!-- Checkout Form State -->
+      <div class="checkout-layout" id="checkoutLayout">
+        <form class="checkout-form" id="checkoutForm" onsubmit="handlePlaceOrder(event)">
+          <h3 data-lang="checkout_shipping_details">Shipping Details</h3>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label><span data-lang="checkout_name">Full Name</span> <span class="required">*</span></label>
+              <input type="text" id="s_name" required>
+            </div>
+            <div class="form-group">
+              <label><span data-lang="checkout_phone">Phone Number</span> <span class="required">*</span></label>
+              <input type="tel" id="s_phone" required>
+            </div>
+            <div class="form-group">
+              <label><span data-lang="checkout_email">Email</span></label>
+              <input type="email" id="s_email">
+            </div>
+            <div class="form-group full-width">
+              <label><span data-lang="checkout_address">Address</span> <span class="required">*</span></label>
+              <textarea id="s_address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label><span data-lang="checkout_city">City</span> <span class="required">*</span></label>
+              <input type="text" id="s_city" required>
+            </div>
+            <div class="form-group">
+              <label><span data-lang="checkout_state">State</span> <span class="required">*</span></label>
+              <input type="text" id="s_state" required>
+            </div>
+            <div class="form-group">
+              <label><span data-lang="checkout_pincode">Pincode</span> <span class="required">*</span></label>
+              <input type="text" id="s_pincode" required>
+            </div>
+          </div>
+
+          <h3 data-lang="checkout_payment" style="margin-top:24px;">Payment Method</h3>
+          <div class="payment-methods">
+            <label class="payment-method active" id="pm_cod">
+              <input type="radio" name="payment" value="cod" checked onchange="togglePayment('cod')">
+              <div class="payment-method-info">
+                <div class="method-name" data-lang="checkout_cod">Cash on Delivery</div>
+                <div class="method-desc" data-lang="checkout_cod_desc">Pay when you receive your order</div>
+              </div>
+              <div class="payment-method-icon">💵</div>
+            </label>
+            <label class="payment-method" id="pm_upi">
+              <input type="radio" name="payment" value="upi" onchange="togglePayment('upi')">
+              <div class="payment-method-info">
+                <div class="method-name" data-lang="checkout_upi">UPI Payment</div>
+                <div class="method-desc" data-lang="checkout_upi_desc">Pay via Google Pay, PhonePe, Paytm</div>
+              </div>
+              <div class="payment-method-icon">📱</div>
+            </label>
+            
+            <div class="upi-details" id="upiDetails">
+              <p>Scan or send payment to our UPI ID:</p>
+              <div class="upi-id" id="displayUpiId">shreeradhe@upi</div>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Your order will be processed after payment verification.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-whatsapp" style="width:100%; margin-top:24px; font-size:1.1rem;">
+            <span data-lang="checkout_place_order">Place Order via WhatsApp</span>
+          </button>
+        </form>
+
+        <div class="cart-summary" style="height:fit-content;">
+          <h3 data-lang="cart_summary">Order Summary</h3>
+          <div id="checkoutItems" style="margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px;"></div>
+          
+          <div class="summary-row">
+            <span data-lang="cart_subtotal">Subtotal</span>
+            <span id="c_subtotal">₹0</span>
+          </div>
+          <div class="summary-row" id="c_discount_row" style="display:none;">
+            <span data-lang="cart_discount">Discount</span>
+            <span class="discount" id="c_discount">-₹0</span>
+          </div>
+          <div class="summary-row">
+            <span data-lang="cart_shipping">Shipping</span>
+            <span id="c_shipping">₹0</span>
+          </div>
+          <div class="summary-row total">
+            <span data-lang="cart_total">Total</span>
+            <span id="c_total">₹0</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

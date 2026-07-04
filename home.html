@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shreeradhe | Women's Clothing</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FDF6F0 0%, #f5e6f0 50%, #ede0f0 100%);"></div>
+    </div>
+    <div class="hero-shapes">
+      <span class="hero-shape"></span>
+      <span class="hero-shape"></span>
+      <span class="hero-shape"></span>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge" data-lang="hero_badge">NEW COLLECTION 2026</span>
+        <h1><span data-lang="hero_title_1">Discover Your</span> <br><span data-lang="hero_title_2">Perfect Style</span></h1>
+        <p data-lang="hero_desc">Explore our handpicked collection of ethnic and contemporary women's fashion. From elegant sarees to trendy kurtis — find your perfect look.</p>
+        <div class="hero-buttons">
+          <a href="shop.html" class="btn btn-primary" data-lang="hero_btn_shop">Shop Now</a>
+          <a href="shop.html" class="btn btn-outline" data-lang="hero_btn_collection">View Collection</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-lang="section_categories">Shop by Category</h2>
+        <p data-lang="section_categories_desc">Find exactly what you're looking for</p>
+      </div>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Categories injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Products Section -->
+  <section class="section reveal" style="background: #fff;">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-lang="section_trending">Trending Now</h2>
+        <p data-lang="section_trending_desc">Most loved by our customers</p>
+      </div>
+      <div class="product-scroll" id="trendingProducts">
+        <!-- Products injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Story Parallax Section -->
+  <section class="brand-story reveal">
+    <div class="brand-story-shapes">
+      <span></span><span></span>
+    </div>
+    <div class="container">
+      <div class="brand-story-content">
+        <h2 data-lang="brand_story_title">The Shreeradhe Story</h2>
+        <p data-lang="brand_story_text">Born from a passion for timeless Indian craftsmanship, Shreeradhe brings you handpicked fashion that celebrates the modern Indian woman. Every piece tells a story of tradition meeting contemporary elegance.</p>
+        <a href="about.html" class="btn btn-outline" style="border-color: #fff; color: #fff;" data-lang="brand_story_btn">Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- New Arrivals Section -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2 data-lang="section_new">New Arrivals</h2>
+        <p data-lang="section_new_desc">Fresh styles just dropped</p>
+      </div>
+      <div class="products-grid" id="newProducts">
+        <!-- Products injected via JS -->
+      </div>
+      <div class="text-center mt-3">
+        <a href="shop.html" class="btn btn-outline" data-lang="common_view_all">View All</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter reveal">
+    <div class="container">
+      <h2 data-lang="newsletter_title">Stay in Style</h2>
+      <p data-lang="newsletter_desc">Subscribe for exclusive offers, new arrivals & style tips</p>
+      <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success'); this.reset();">
+        <input type="email" required placeholder="Enter your email" data-lang="newsletter_placeholder">
+        <button type="submit" class="btn btn-secondary" data-lang="newsletter_btn">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('navbarContainer').innerHTML = getNavbarHTML('home');
+      document.getElementById('footerContainer').innerHTML = getFooterHTML();
+      initNavigation(); 
+      initLanguageToggle(); 
+
+      // Render Categories
+      const categoriesGrid = document.getElementById('categoriesGrid');
+      const catsToShow = [
+        { id: 'sarees', bg: 'linear-gradient(135deg, #e8899f, #a3405f)' },
+        { id: 'kurtis', bg: 'linear-gradient(135deg, #6b2d63, #2D1B2E)' },
+        { id: 'lehengas', bg: 'linear-gradient(135deg, #e6c97a, #D4A853)' },
+        { id: 'dresses', bg: 'linear-gradient(135deg, #4CAF50, #2E7D32)' }
+      ];
+      
+      catsToShow.forEach(c => {
+        const cat = CATEGORIES.find(cat => cat.id === c.id);
+        if(cat) {
+          categoriesGrid.innerHTML += \`
+            <a href="shop.html?category=\${cat.id}" class="category-card">
+              <div style="width:100%; height:100%; background: \${c.bg}; display:flex; align-items:center; justify-content:center; font-size: 5rem;">\${cat.icon}</div>
+              <div class="category-overlay">
+                <h3>\${tName(cat.name)}</h3>
+                <p>\${cat.count} Items</p>
+                <div class="cat-arrow">→</div>
+              </div>
+            </a>
+          \`;
+        }
+      });
+
+      // Render Trending
+      const trendingContainer = document.getElementById('trendingProducts');
+      const products = getProducts();
+      const trending = products.filter(p => p.isTrending).slice(0, 5);
+      trending.forEach(p => {
+        trendingContainer.appendChild(createProductCard(p));
+      });
+
+      // Render New Arrivals
+      const newContainer = document.getElementById('newProducts');
+      const newArrivals = products.filter(p => p.isNew).slice(0, 8);
+      newArrivals.forEach(p => {
+        newContainer.appendChild(createProductCard(p));
+      });
+      
+      updatePageLanguage();
+    });
+  </script>
+</body>
+</html>

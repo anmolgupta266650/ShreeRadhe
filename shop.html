@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+  
+  <div class="page-header">
+    <div class="container">
+      <h1 data-lang="shop_title">Our Collection</h1>
+      <div class="breadcrumb">
+        <a href="home.html" data-lang="nav_home">Home</a>
+        <span class="separator">/</span>
+        <span data-lang="nav_shop">Shop</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container shop-layout">
+      
+      <button class="btn btn-outline mobile-filter-btn" id="mobileFilterBtn" onclick="document.getElementById('shopSidebar').classList.add('open')">
+        <span data-lang="shop_filter">Filters</span>
+      </button>
+
+      <aside class="shop-sidebar" id="shopSidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;" class="hide-desktop">
+          <h3 data-lang="shop_filter">Filters</h3>
+          <button class="btn-icon" onclick="document.getElementById('shopSidebar').classList.remove('open')">✕</button>
+        </div>
+
+        <div class="filter-group">
+          <h4 onclick="this.parentElement.classList.toggle('collapsed')">
+            <span data-lang="shop_filter_category">Category</span>
+            <span class="arrow">▼</span>
+          </h4>
+          <div class="filter-options" id="categoryFilters"></div>
+        </div>
+
+        <div class="filter-group">
+          <h4 onclick="this.parentElement.classList.toggle('collapsed')">
+            <span data-lang="shop_filter_price">Price Range</span>
+            <span class="arrow">▼</span>
+          </h4>
+          <div class="filter-options">
+            <div class="price-range-container">
+              <input type="range" min="0" max="15000" step="100" value="15000" class="price-range-slider" id="priceRange">
+              <div class="price-display">
+                <span>₹0</span>
+                <span id="priceDisplayValue">₹15,000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 onclick="this.parentElement.classList.toggle('collapsed')">
+            <span data-lang="shop_filter_size">Size</span>
+            <span class="arrow">▼</span>
+          </h4>
+          <div class="filter-options" id="sizeFilters"></div>
+        </div>
+
+        <div class="filter-group">
+          <h4 onclick="this.parentElement.classList.toggle('collapsed')">
+            <span data-lang="shop_filter_color">Color</span>
+            <span class="arrow">▼</span>
+          </h4>
+          <div class="filter-options">
+            <div class="color-swatches" id="colorFilters"></div>
+          </div>
+        </div>
+        
+        <button class="btn btn-outline btn-sm w-100" style="width: 100%; margin-top:10px;" onclick="clearFilters()" data-lang="shop_clear_filters">Clear Filters</button>
+      </aside>
+
+      <main class="shop-main">
+        <div class="shop-header">
+          <div class="shop-result-count">
+            <span id="resultCount">0</span> <span data-lang="shop_results">products found</span>
+          </div>
+          <div class="shop-sort">
+            <select id="sortSelect" onchange="applyFilters()">
+              <option value="popular" data-lang="shop_sort_popular">Popular</option>
+              <option value="newest" data-lang="shop_sort_newest">Newest</option>
+              <option value="price-low" data-lang="shop_sort_low">Price: Low to High</option>
+              <option value="price-high" data-lang="shop_sort_high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+        
+        <div id="noProducts" class="empty-state" style="display:none;">
+          <div class="empty-state-icon">🔍</div>
+          <h3 data-lang="shop_no_products">No products found</h3>
+          <p data-lang="shop_clear_filters" style="cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="clearFilters()">Clear all filters</p>
+        </div>
+
+        <div class="load-more" id="loadMoreContainer">
+          <button class="btn btn-secondary" id="loadMoreBtn" onclick="loadMore()" data-lang="shop_load_more">Load More</button>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>

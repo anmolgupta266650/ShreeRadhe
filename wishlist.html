@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 data-lang="wishlist_title">My Wishlist</h1>
+    </div>
+  </div>
+
+  <section class="section wishlist-page" style="padding-top:0;">
+    <div class="container">
+      
+      <div id="emptyWishlist" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">🤍</div>
+        <h3 data-lang="wishlist_empty">Your wishlist is empty</h3>
+        <p data-lang="wishlist_empty_desc">Save items you love for later</p>
+        <a href="shop.html" class="btn btn-primary" data-lang="cart_continue">Continue Shopping</a>
+      </div>
+
+      <div class="products-grid" id="wishlistGrid">
+        <!-- Wishlist items injected via JS -->
+      </div>
+      
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/wishlist.js"></script>
+</body>
+</html>

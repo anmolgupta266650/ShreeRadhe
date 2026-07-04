@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FDF6F0 0%, #f5e6f0 50%, #ede0f0 100%);
+      padding: 20px;
+    }
+    .auth-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 450px;
+      padding: 40px;
+      text-align: center;
+    }
+    .auth-logo {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .auth-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+    }
+    .auth-tab.active {
+      color: var(--primary);
+    }
+    .auth-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+    }
+    .auth-form {
+      display: none;
+      text-align: left;
+    }
+    .auth-form.active {
+      display: block;
+    }
+    .otp-section {
+      display: none;
+      margin-top: 16px;
+    }
+    .otp-section.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="auth-page">
+    <div class="auth-card reveal visible">
+      <div class="auth-logo">🪷</div>
+      <h1 class="auth-title">Welcome</h1>
+      <p class="text-muted mb-3">Please sign in to continue</p>
+      
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchTab('user')">Customer</div>
+        <div class="auth-tab" onclick="switchTab('admin')">Admin</div>
+      </div>
+
+      <!-- Customer Form -->
+      <form id="userForm" class="auth-form active" onsubmit="handleUserAuth(event)">
+        <div class="form-group" id="phoneGroup">
+          <label>Phone Number</label>
+          <input type="tel" id="userPhone" placeholder="+91 98765 43210" required>
+        </div>
+        
+        <button type="button" id="btnGetOtp" class="btn btn-secondary" style="width:100%; margin-top:16px;" onclick="generateOTP()">Get OTP</button>
+
+        <div class="otp-section" id="otpSection">
+          <div class="form-group">
+            <label>Enter 4-digit OTP</label>
+            <input type="text" id="userOtp" placeholder="XXXX" maxlength="4">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:16px;">Verify & Login</button>
+        </div>
+        
+        <div id="userError" class="text-danger mt-2" style="display:none; color:var(--error); font-size:0.9rem; text-align:center;"></div>
+      </form>
+
+      <!-- Admin Form -->
+      <form id="adminForm" class="auth-form" onsubmit="handleAdminAuth(event)">
+        <div class="form-group mb-2">
+          <label>Username</label>
+          <input type="text" id="adminUser" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="adminPass" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:24px;">Admin Login</button>
+        <div id="adminError" class="text-danger mt-2" style="display:none; color:var(--error); font-size:0.9rem; text-align:center;">Invalid credentials</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Tab Switching logic
+    function switchTab(tab) {
+      document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(el => el.classList.remove('active'));
+      
+      if (tab === 'user') {
+        document.querySelectorAll('.auth-tab')[0].classList.add('active');
+        document.getElementById('userForm').classList.add('active');
+      } else {
+        document.querySelectorAll('.auth-tab')[1].classList.add('active');
+        document.getElementById('adminForm').classList.add('active');
+      }
+    }
+
+    // Customer OTP Simulation
+    let currentOTP = null;
+
+    function generateOTP() {
+      const phone = document.getElementById('userPhone').value.trim();
+      if (!phone || phone.length < 10) {
+        showError('userError', 'Please enter a valid phone number');
+        return;
+      }
+      
+      // Simulate API call to send SMS
+      document.getElementById('btnGetOtp').textContent = 'Sending...';
+      document.getElementById('btnGetOtp').disabled = true;
+      
+      setTimeout(() => {
+        // Generate random 4 digit code
+        currentOTP = Math.floor(1000 + Math.random() * 9000).toString();
+        
+        document.getElementById('btnGetOtp').style.display = 'none';
+        document.getElementById('otpSection').classList.add('show');
+        document.getElementById('userError').style.display = 'none';
+        
+        // Show Toast Notification to simulate receiving an SMS
+        showToast(`SIMULATED SMS: Your Shreeradhe OTP is ${currentOTP}`, 'info');
+      }, 800);
+    }
+
+    function handleUserAuth(e) {
+      e.preventDefault();
+      const enteredOtp = document.getElementById('userOtp').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+      
+      if (enteredOtp === currentOTP) {
+        sessionStorage.setItem('sr_user_logged_in', 'true');
+        sessionStorage.setItem('sr_user_phone', phone);
+        window.location.href = 'home.html';
+      } else {
+        showError('userError', 'Invalid OTP. Please try again.');
+      }
+    }
+
+    // Admin Auth Logic
+    function handleAdminAuth(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value.trim();
+      
+      if (user === 'admin' && pass === 'shreeradhe2026') {
+        sessionStorage.setItem('sr_admin_logged_in', 'true');
+        window.location.href = 'admin.html';
+      } else {
+        showError('adminError', 'Invalid username or password');
+      }
+    }
+
+    function showError(elementId, message) {
+      const el = document.getElementById(elementId);
+      el.textContent = message;
+      el.style.display = 'block';
+    }
+
+    // Minimal Toast Implementation for the auth page
+    function showToast(message, type = 'success') {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span style="font-weight:600; font-size: 1.1rem; padding: 8px 16px;">${message}</span>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

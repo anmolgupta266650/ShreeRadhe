@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <section class="about-page">
+    <div class="container">
+      
+      <div class="about-hero reveal">
+        <span style="font-size:3rem; display:block; margin-bottom:16px;">🪷</span>
+        <h1 data-lang="about_title">Our Story</h1>
+        <p data-lang="about_desc">Shreeradhe was born from a simple dream — to make every Indian woman feel beautiful in clothes that celebrate her heritage while embracing modernity. We curate and craft pieces that blend traditional artistry with contemporary design, ensuring every woman finds her perfect expression of style.</p>
+      </div>
+
+      <div class="values-grid">
+        <div class="value-card reveal" style="transition-delay:0.1s;">
+          <div class="value-icon">💎</div>
+          <h4 data-lang="about_value_1_title">Quality First</h4>
+          <p data-lang="about_value_1_desc">Every piece is crafted with premium fabrics and meticulous attention to detail</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.2s;">
+          <div class="value-icon">🎨</div>
+          <h4 data-lang="about_value_2_title">Artisan Crafted</h4>
+          <p data-lang="about_value_2_desc">We partner with skilled artisans to preserve traditional craftsmanship</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.3s;">
+          <div class="value-icon">🌿</div>
+          <h4 data-lang="about_value_3_title">Sustainable Fashion</h4>
+          <p data-lang="about_value_3_desc">Committed to ethical practices and eco-friendly materials</p>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('navbarContainer').innerHTML = getNavbarHTML('about');
+      document.getElementById('footerContainer').innerHTML = getFooterHTML();
+      initNavigation();
+      initLanguageToggle();
+      updatePageLanguage();
+    });
+  </script>
+</body>
+</html>

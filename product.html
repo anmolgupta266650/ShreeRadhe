@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="container product-detail">
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="home.html" data-lang="nav_home">Home</a>
+      <span class="separator">/</span>
+      <a href="shop.html" data-lang="nav_shop">Shop</a>
+      <span class="separator">/</span>
+      <span id="bcCategory"></span>
+      <span class="separator">/</span>
+      <span id="bcProductName"></span>
+    </div>
+
+    <div class="product-detail-grid">
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="gallery-main" id="galleryMain">
+          <img src="" alt="" id="mainImage">
+        </div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-detail-info">
+        <p class="product-category-label" id="productCategory"></p>
+        <h1 id="productName"></h1>
+        <div class="product-rating">
+          <span class="stars" id="productStars"></span>
+          <span class="rating-count" id="productReviews"></span>
+        </div>
+        
+        <div class="detail-price">
+          <span class="current-price" id="currentPrice"></span>
+          <span class="original-price" id="originalPrice"></span>
+          <span class="discount-percent" id="discountPercent" style="display:none;"></span>
+        </div>
+
+        <p class="detail-description" id="productDesc"></p>
+
+        <div class="detail-options">
+          <div class="option-label">
+            <span data-lang="product_select_size">Select Size</span>
+            <span class="size-guide-link" onclick="openModal('sizeGuideModal')" data-lang="product_size_guide">Size Guide</span>
+          </div>
+          <div class="size-options" id="sizeOptions"></div>
+        </div>
+
+        <div class="detail-options">
+          <div class="option-label" data-lang="product_select_color">Select Color</div>
+          <div class="color-options" id="colorOptions"></div>
+        </div>
+
+        <div class="detail-options" style="display:flex; align-items:center; gap:20px;">
+          <div class="quantity-selector">
+            <button class="qty-btn" onclick="updateQty(-1)">-</button>
+            <input type="text" class="qty-value" id="qtyInput" value="1" readonly>
+            <button class="qty-btn" onclick="updateQty(1)">+</button>
+          </div>
+          <span id="stockStatus" style="font-size:0.9rem; font-weight:600;"></span>
+        </div>
+
+        <div class="detail-buttons">
+          <button class="btn btn-primary" id="addCartBtn" onclick="handleAddToCart()">
+            <span data-lang="product_add_cart">Add to Cart</span> 🛒
+          </button>
+          <button class="btn btn-outline" id="wishlistBtn" onclick="handleWishlist()">
+            <span data-lang="product_add_wishlist">Wishlist</span> 🤍
+          </button>
+          <button class="btn btn-whatsapp" id="whatsappBtn" onclick="handleWhatsApp()">
+            <span data-lang="product_whatsapp">Ask on WhatsApp</span> 💬
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="product-tabs">
+      <div class="tab-headers">
+        <button class="tab-header active" onclick="switchTab('desc')" data-lang="product_description">Description</button>
+        <button class="tab-header" onclick="switchTab('reviews')" data-lang="product_reviews">Reviews</button>
+        <button class="tab-header" onclick="switchTab('shipping')" data-lang="product_shipping">Shipping Info</button>
+      </div>
+      <div class="tab-content active" id="tab-desc"></div>
+      <div class="tab-content" id="tab-reviews">
+        <div style="margin-bottom:20px;">
+          <strong>Priya S.</strong> <span class="stars">★★★★★</span>
+          <p>Beautiful product! The quality is amazing and fits perfectly.</p>
+        </div>
+        <div style="margin-bottom:20px;">
+          <strong>Neha R.</strong> <span class="stars">★★★★☆</span>
+          <p>Lovely design, looks exactly like the picture. Very happy with the purchase.</p>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-shipping">
+        <h4 style="color:var(--text); margin-bottom:10px;">Delivery Timeline</h4>
+        <p>Standard delivery takes 5-7 business days. Express delivery is available for select locations within 2-3 business days.</p>
+        <h4 style="color:var(--text); margin-top:20px; margin-bottom:10px;">Return Policy</h4>
+        <p>We offer easy 7-day returns for all products. Items must be unworn and in original packaging with tags.</p>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="section">
+      <div class="section-title">
+        <h2 data-lang="section_related">You May Also Like</h2>
+      </div>
+      <div class="product-scroll" id="relatedProducts"></div>
+    </section>
+
+  </div>
+
+  <!-- Size Guide Modal -->
+  <div class="modal-overlay" id="sizeGuideModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-lang="product_size_guide">Size Guide</h3>
+        <button class="modal-close" onclick="closeModal('sizeGuideModal')">✕</button>
+      </div>
+      <table style="width:100%; border-collapse: collapse; text-align:center;">
+        <tr style="border-bottom: 2px solid var(--border); background:rgba(0,0,0,0.03);">
+          <th style="padding:10px;">Size</th>
+          <th style="padding:10px;">Bust (in)</th>
+          <th style="padding:10px;">Waist (in)</th>
+          <th style="padding:10px;">Hip (in)</th>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:10px; font-weight:600;">XS</td>
+          <td>32</td><td>26</td><td>34</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:10px; font-weight:600;">S</td>
+          <td>34</td><td>28</td><td>36</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:10px; font-weight:600;">M</td>
+          <td>36</td><td>30</td><td>38</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:10px; font-weight:600;">L</td>
+          <td>38</td><td>32</td><td>40</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; font-weight:600;">XL</td>
+          <td>40</td><td>34</td><td>42</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>

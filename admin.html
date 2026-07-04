@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page">
+  <div id="navbarContainer"></div>
+
+  <div class="container">
+    
+    <!-- Login Form -->
+    <div class="admin-login" id="adminLogin">
+      <h2 data-lang="admin_login_title">Admin Login</h2>
+      <p data-lang="admin_login_desc">Enter your credentials to access the dashboard</p>
+      <div class="admin-login-error" id="loginError">Invalid credentials</div>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label data-lang="admin_username">Username</label>
+          <input type="text" id="adminUser" required>
+        </div>
+        <div class="form-group">
+          <label data-lang="admin_password">Password</label>
+          <input type="password" id="adminPass" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:16px;" data-lang="admin_login_btn">Login</button>
+      </form>
+      <p style="margin-top:20px; font-size:0.85rem; color:var(--text-muted);">Default credentials: admin / shreeradhe2026</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <div class="admin-header">
+        <h2 data-lang="admin_title">Admin Panel</h2>
+        <button class="btn btn-outline btn-sm" onclick="handleLogout()" data-lang="admin_logout">Logout</button>
+      </div>
+
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-icon products">📦</div>
+          <div class="stat-info">
+            <h4 id="statProducts">0</h4>
+            <p data-lang="admin_total_products">Total Products</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orders">🛍️</div>
+          <div class="stat-info">
+            <h4 id="statOrders">0</h4>
+            <p data-lang="admin_total_orders">Total Orders</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon revenue">💰</div>
+          <div class="stat-info">
+            <h4 id="statRevenue">₹0</h4>
+            <p data-lang="admin_revenue">Revenue</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('products')" data-lang="admin_products">Products</button>
+        <button class="admin-tab" onclick="switchAdminTab('orders')" data-lang="admin_orders">Orders</button>
+        <button class="admin-tab" onclick="switchAdminTab('coupons')" data-lang="admin_coupons">Coupons</button>
+        <button class="admin-tab" onclick="switchAdminTab('settings')" data-lang="admin_settings">Settings</button>
+      </div>
+
+      <!-- Products Tab -->
+      <div class="admin-tab-content active" id="tab-products">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <h3 data-lang="admin_products">Manage Products</h3>
+          <button class="btn btn-primary btn-sm" onclick="toggleProductForm()" data-lang="admin_add_product">Add Product</button>
+        </div>
+
+        <div id="productFormContainer" style="display:none; background:rgba(0,0,0,0.02); padding:24px; border-radius:var(--radius-md); margin-bottom:32px;">
+          <h4 id="productFormTitle" style="margin-bottom:20px;" data-lang="admin_add_product">Add New Product</h4>
+          <form class="admin-product-form" id="productForm" onsubmit="saveProduct(event)">
+            <input type="hidden" id="p_id">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Name (English)</label>
+                <input type="text" id="p_name_en" required>
+              </div>
+              <div class="form-group">
+                <label>Name (Hindi)</label>
+                <input type="text" id="p_name_hi" required>
+              </div>
+              <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" id="p_price" required>
+              </div>
+              <div class="form-group">
+                <label>Compare Price (₹) - optional</label>
+                <input type="number" id="p_compare_price">
+              </div>
+              <div class="form-group full-width">
+                <label>Category</label>
+                <select id="p_category" required>
+                  <option value="sarees">Sarees</option>
+                  <option value="kurtis">Kurtis</option>
+                  <option value="lehengas">Lehengas</option>
+                  <option value="dresses">Dresses</option>
+                  <option value="tops">Tops & Sets</option>
+                  <option value="accessories">Accessories</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label>Sizes (comma separated, e.g. S,M,L,Free Size)</label>
+                <input type="text" id="p_sizes" required>
+              </div>
+              <div class="form-group full-width">
+                <label>Colors (Name:Hex, comma separated, e.g. Red:#D32F2F, Blue:#1565C0)</label>
+                <input type="text" id="p_colors" required>
+              </div>
+              <div class="form-group full-width">
+                <label>Description (English)</label>
+                <textarea id="p_desc_en" rows="3" required></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label>Description (Hindi)</label>
+                <textarea id="p_desc_hi" rows="3" required></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label>Image Upload</label>
+                <div class="image-upload-area" onclick="document.getElementById('p_image').click()">
+                  <div class="upload-icon">📸</div>
+                  <p>Click to upload image</p>
+                  <input type="file" id="p_image" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                </div>
+                <div class="image-preview-grid" id="imagePreviewContainer"></div>
+              </div>
+              <div class="form-group">
+                <label style="display:flex; align-items:center; gap:8px;">
+                  <input type="checkbox" id="p_instock" checked style="width:auto; height:auto;"> In Stock
+                </label>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:24px;">
+              <button type="submit" class="btn btn-primary" data-lang="common_save">Save</button>
+              <button type="button" class="btn btn-outline" onclick="toggleProductForm()" data-lang="common_cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Img</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div class="admin-tab-content" id="tab-orders">
+        <h3 style="margin-bottom:24px;" data-lang="admin_orders">Manage Orders</h3>
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Coupons Tab -->
+      <div class="admin-tab-content" id="tab-coupons">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <h3 data-lang="admin_coupons">Manage Coupons</h3>
+          <button class="btn btn-primary btn-sm" onclick="toggleCouponForm()">Add Coupon</button>
+        </div>
+        
+        <div id="couponFormContainer" style="display:none; background:rgba(0,0,0,0.02); padding:24px; border-radius:var(--radius-md); margin-bottom:32px;">
+          <form class="admin-product-form" onsubmit="saveCoupon(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Coupon Code</label>
+                <input type="text" id="c_code" required>
+              </div>
+              <div class="form-group">
+                <label>Discount Type</label>
+                <select id="c_type" required>
+                  <option value="percent">Percentage (%)</option>
+                  <option value="flat">Flat Amount (₹)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Discount Value</label>
+                <input type="number" id="c_value" required>
+              </div>
+              <div class="form-group">
+                <label>Minimum Order (₹)</label>
+                <input type="number" id="c_min">
+              </div>
+              <div class="form-group">
+                <label>Expiry Date</label>
+                <input type="date" id="c_expiry" required>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:24px;">
+              <button type="submit" class="btn btn-primary" data-lang="common_save">Save</button>
+              <button type="button" class="btn btn-outline" onclick="toggleCouponForm()" data-lang="common_cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Min Order</th>
+                <th>Expiry</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="couponsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="admin-tab-content" id="tab-settings">
+        <h3 style="margin-bottom:24px;" data-lang="admin_settings">Store Settings</h3>
+        <form class="admin-product-form" onsubmit="saveStoreSettings(event)">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>WhatsApp Number (Include Country Code, e.g., 919876543210)</label>
+              <input type="text" id="set_wa" required>
+            </div>
+            <div class="form-group full-width">
+              <label>UPI ID for Payments</label>
+              <input type="text" id="set_upi" required>
+            </div>
+            <div class="form-group">
+              <label>Store Email</label>
+              <input type="email" id="set_email">
+            </div>
+            <div class="form-group">
+              <label>Store Phone (Display format)</label>
+              <input type="text" id="set_phone">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3" data-lang="common_save">Save Settings</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Shreeradhe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 data-lang="contact_title">Get in Touch</h1>
+      <p data-lang="contact_desc">We'd love to hear from you</p>
+    </div>
+  </div>
+
+  <section class="section contact-page" style="padding-top:0;">
+    <div class="container">
+      
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="contact-info-card">
+            <div class="contact-info-icon">📍</div>
+            <div>
+              <h4 style="margin-bottom:4px;">Visit Us</h4>
+              <p style="color:var(--text-muted); font-size:0.9rem;" id="c_address"></p>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-info-icon">📞</div>
+            <div>
+              <h4 style="margin-bottom:4px;">Call Us</h4>
+              <p style="color:var(--text-muted); font-size:0.9rem;" id="c_phone"></p>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-info-icon">📧</div>
+            <div>
+              <h4 style="margin-bottom:4px;">Email Us</h4>
+              <p style="color:var(--text-muted); font-size:0.9rem;" id="c_email"></p>
+            </div>
+          </div>
+          <button class="btn btn-whatsapp" style="width:100%; margin-top:16px;" onclick="window.open(generateWhatsAppLink('Hi Shreeradhe!'), '_blank')">
+            <span data-lang="contact_whatsapp">Chat on WhatsApp</span> 💬
+          </button>
+        </div>
+
+        <div class="contact-form reveal" style="transition-delay:0.2s;">
+          <h3>Send a Message</h3>
+          <form onsubmit="event.preventDefault(); showToast('Message sent successfully!', 'success'); this.reset();">
+            <div class="form-group">
+              <label data-lang="contact_form_name">Your Name</label>
+              <input type="text" required>
+            </div>
+            <div class="form-group">
+              <label data-lang="contact_form_email">Your Email</label>
+              <input type="email" required>
+            </div>
+            <div class="form-group">
+              <label data-lang="contact_form_subject">Subject</label>
+              <input type="text" required>
+            </div>
+            <div class="form-group">
+              <label data-lang="contact_form_message">Message</label>
+              <textarea rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" data-lang="contact_form_send">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="faq-section reveal">
+        <div class="section-title">
+          <h2 data-lang="contact_faq_title">Frequently Asked Questions</h2>
+        </div>
+        <div style="max-width:800px; margin:0 auto;">
+          <div class="faq-item">
+            <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span data-lang="faq_1_q">How long does delivery take?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-lang="faq_1_a">Standard delivery takes 5-7 business days.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span data-lang="faq_2_q">What is your return policy?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-lang="faq_2_a">We offer easy 7-day returns for all products.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span data-lang="faq_3_q">Do you offer Cash on Delivery?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-lang="faq_3_a">Yes! We offer COD across India.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span data-lang="faq_4_q">How can I track my order?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner" data-lang="faq_4_a">You can track your order using the Track Order page.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <div id="footerContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lang.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('navbarContainer').innerHTML = getNavbarHTML('contact');
+      document.getElementById('footerContainer').innerHTML = getFooterHTML();
+      initNavigation();
+      initLanguageToggle();
+      updatePageLanguage();
+      
+      const settings = getSettings();
+      document.getElementById('c_address').textContent = settings.storeAddress || '';
+      document.getElementById('c_phone').textContent = settings.storePhone || '';
+      document.getElementById('c_email').textContent = settings.storeEmail || '';
+    });
+  </script>
+</body>
+</html>
